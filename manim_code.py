@@ -57,7 +57,7 @@ def convert_state(before_state):
     after_state = after_state[:9] + after_state[27:36] + after_state[18:27] + after_state[45:] + after_state[9:18] + after_state[36:45]
     return after_state
 
-class Cube(ThreeDScene):
+class Turn(ThreeDScene):
     def construct(self):
         cube = RubiksCube(colors=[WHITE, ORANGE, DARK_BLUE, YELLOW, PINK, "#00FF00"]).scale(0.6).move_to(ORIGIN)
         state_from_file = get_state_from_file()
@@ -66,10 +66,22 @@ class Cube(ThreeDScene):
         self.add(cube)
         self.set_camera_orientation(phi=50*DEGREES, theta=160*DEGREES, distance=8)
         #self.begin_ambient_camera_rotation(rate=PI/4)
-        move = "F"
+        with open("move.txt","r") as f:
+            move = f.read()
         self.play(CubeMove(cube, move))
         magic_cube.rotate(move)
 
         state = get_state(magic_cube)
         update_state_file(state)
         self.wait(8)
+
+class Show(ThreeDScene):
+    def construct(self):
+        cube = RubiksCube(colors=[WHITE, ORANGE, DARK_BLUE, YELLOW, PINK, "#00FF00"]).scale(0.6).move_to(ORIGIN)
+        state_from_file = get_state_from_file()
+        cube.set_state(convert_state(state_from_file))
+        self.add(cube)
+        self.set_camera_orientation(phi=50*DEGREES, theta=160*DEGREES, distance=8)
+        #self.begin_ambient_camera_rotation(rate=PI/4)
+        self.wait(8)
+        

@@ -1,3 +1,3 @@
 # This file is used internally by FFMPEG.
-file 'file:C:/Users/swoye/Desktop/Coding/discord-rubiks/media/videos/manim_code/480p15/partial_movie_files/Cube/929486592_3621258777_2825003089.mp4'
-file 'file:C:/Users/swoye/Desktop/Coding/discord-rubiks/media/videos/manim_code/480p15/partial_movie_files/Cube/3098384548_4130465104_3660759808.mp4'
+file 'file:C:/Users/swoye/Desktop/Coding/discord-rubiks/media/videos/manim_code/480p15/partial_movie_files/Cube/980354774_1593650012_3007656868.mp4'
+file 'file:C:/Users/swoye/Desktop/Coding/discord-rubiks/media/videos/manim_code/480p15/partial_movie_files/Cube/375497054_822428227_2079794495.mp4'
