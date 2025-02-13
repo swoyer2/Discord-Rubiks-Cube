@@ -57,6 +57,22 @@ def convert_state(before_state):
     after_state = after_state[:9] + after_state[27:36] + after_state[18:27] + after_state[45:] + after_state[9:18] + after_state[36:45]
     return after_state
 
+def get_camera_orientation():
+    with open('camera_orientation.txt', "r") as file:
+        content = file.read().strip()
+
+    values = content.split(",")
+
+    tuple_values = tuple(int(val.strip()) for val in values)
+
+    modified_tuple = (
+        tuple_values[0] * DEGREES,
+        tuple_values[1] * DEGREES,
+        tuple_values[2] * DEGREES
+    )
+
+    return modified_tuple
+
 class Turn(ThreeDScene):
     def construct(self):
         cube = RubiksCube(colors=[WHITE, ORANGE, DARK_BLUE, YELLOW, PINK, "#00FF00"]).scale(0.6).move_to(ORIGIN)
@@ -64,10 +80,12 @@ class Turn(ThreeDScene):
         cube.set_state(convert_state(state_from_file))
         magic_cube = magiccube.Cube(3, state_from_file)
         self.add(cube)
-        self.set_camera_orientation(phi=50*DEGREES, theta=160*DEGREES, distance=8)
-        #self.begin_ambient_camera_rotation(rate=PI/4)
+
         with open("move.txt","r") as f:
             move = f.read()
+        phi, theta, gamma = get_camera_orientation()
+        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
+
         self.play(CubeMove(cube, move))
         magic_cube.rotate(move)
 
@@ -81,7 +99,26 @@ class Show(ThreeDScene):
         state_from_file = get_state_from_file()
         cube.set_state(convert_state(state_from_file))
         self.add(cube)
-        self.set_camera_orientation(phi=50*DEGREES, theta=160*DEGREES, distance=8)
+        
+        with open("move.txt","r") as f:
+            move = f.read()
+        phi, theta, gamma = get_camera_orientation()
+        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
+
         #self.begin_ambient_camera_rotation(rate=PI/4)
+        self.wait(8)
+
+class Rotate(ThreeDScene):
+    def construct(self):
+        cube = RubiksCube(colors=[WHITE, ORANGE, DARK_BLUE, YELLOW, PINK, "#00FF00"]).scale(0.6).move_to(ORIGIN)
+        state_from_file = get_state_from_file()
+        cube.set_state(convert_state(state_from_file))
+        self.add(cube)
+        
+        with open("move.txt","r") as f:
+            move = f.read()
+        phi, theta, gamma = get_camera_orientation()
+        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
+
         self.wait(8)
         
