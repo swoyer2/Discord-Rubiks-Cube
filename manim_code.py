@@ -65,13 +65,19 @@ def get_camera_orientation():
 
     tuple_values = tuple(int(val.strip()) for val in values)
 
-    modified_tuple = (
+    before_camera_change = (
         tuple_values[0] * DEGREES,
         tuple_values[1] * DEGREES,
         tuple_values[2] * DEGREES
     )
 
-    return modified_tuple
+    after_camera_change = (
+        tuple_values[3] * DEGREES,
+        tuple_values[4] * DEGREES,
+        tuple_values[5] * DEGREES
+    )
+
+    return before_camera_change, after_camera_change
 
 class Turn(ThreeDScene):
     def construct(self):
@@ -83,8 +89,8 @@ class Turn(ThreeDScene):
 
         with open("move.txt","r") as f:
             move = f.read()
-        phi, theta, gamma = get_camera_orientation()
-        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
+        before_camera_change, after_camera_change = get_camera_orientation()
+        self.set_camera_orientation(phi=after_camera_change[0], theta=after_camera_change[1], gamma=after_camera_change[2], distance=8)
 
         self.play(CubeMove(cube, move))
         magic_cube.rotate(move)
@@ -100,13 +106,8 @@ class Show(ThreeDScene):
         cube.set_state(convert_state(state_from_file))
         self.add(cube)
         
-        with open("move.txt","r") as f:
-            move = f.read()
-        phi, theta, gamma = get_camera_orientation()
-        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
-
-        #self.begin_ambient_camera_rotation(rate=PI/4)
-        self.wait(8)
+        before_camera_change, after_camera_change = get_camera_orientation()
+        self.set_camera_orientation(phi=after_camera_change[0], theta=after_camera_change[1], gamma=after_camera_change[2], distance=8)
 
 class Rotate(ThreeDScene):
     def construct(self):
@@ -114,11 +115,10 @@ class Rotate(ThreeDScene):
         state_from_file = get_state_from_file()
         cube.set_state(convert_state(state_from_file))
         self.add(cube)
-        
-        with open("move.txt","r") as f:
-            move = f.read()
-        phi, theta, gamma = get_camera_orientation()
-        self.set_camera_orientation(phi=phi, theta=theta, gamma=gamma, distance=8)
+        self.renderer.camera.frame_center = cube.get_center()
+        before_camera_change, after_camera_change = get_camera_orientation()
+        self.set_camera_orientation(phi=before_camera_change[0], theta=before_camera_change[1], gamma=before_camera_change[2], distance=8)
+        self.move_camera(phi=after_camera_change[0], theta=after_camera_change[1], gamma=after_camera_change[2], distance=8)
 
         self.wait(8)
         
