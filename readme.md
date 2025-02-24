@@ -31,6 +31,8 @@ This is a Discord bot that allows users to interact with a virtual Rubik's Cube.
    pip install -r requirements.txt
    ```
 
+   Make sure you install manim correctly through their guide here [Manim Community](https://www.manim.community/)
+
 3. **Configure the bot:**
 
    - Create a `config.py` file in the root directory with your Discord bot token and any other necessary configurations. The file should look like this:
