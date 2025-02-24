@@ -1,0 +1,4 @@
+discord.py==2.0.0
+manim==0.17.0
+manim-rubikscube==0.1.0
+magiccube==0.1.0

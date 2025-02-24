@@ -86,14 +86,6 @@ class UIView(discord.ui.View):
         # Edit the message with the new embed and file
         await message.edit(embed=new_embed, attachments=[file])
 
-        with open("fast_setting.txt", "r") as text_file:
-            is_fast = bool(text_file.read())
-        if not is_fast:
-            image_path = show_cube()
-            new_embed = get_embed(image_path)
-            file = discord.File(image_path)
-            await message.edit(embed=new_embed, attachments=[file])
-
     @discord.ui.button(label="F", style=discord.ButtonStyle.primary)
     async def button_right_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
         with open("message_id.txt", "r") as text_file:
@@ -127,14 +119,6 @@ class UIView(discord.ui.View):
 
         # Edit the message with the new embed and file
         await message.edit(embed=new_embed, attachments=[file])
-
-        with open("fast_setting.txt", "r") as text_file:
-            is_fast = bool(text_file.read())
-        if not is_fast:
-            image_path = show_cube()
-            new_embed = get_embed(image_path)
-            file = discord.File(image_path)
-            await message.edit(embed=new_embed, attachments=[file])
     
     @discord.ui.button(label="U", style=discord.ButtonStyle.primary)
     async def button_up_callback(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -170,14 +154,6 @@ class UIView(discord.ui.View):
         # Edit the message with the new embed and file
         await message.edit(embed=new_embed, attachments=[file])
 
-        with open("fast_setting.txt", "r") as text_file:
-            is_fast = bool(text_file.read())
-        if not is_fast:
-            image_path = show_cube()
-            new_embed = get_embed(image_path)
-            file = discord.File(image_path)
-            await message.edit(embed=new_embed, attachments=[file])
-
 def get_embed(manim_output):
     embed = discord.Embed(
         title=f"Rubik's Cube",
@@ -209,6 +185,12 @@ def turn_cube():
         path = 'media/images/manim_code/Turn_ManimCE_v0.19.0.png'
 
     subprocess.run(settings, shell=True)
+    with open("state.txt","r") as f:
+        state = f.read()
+    if state == 'YYYYYYYYYRRRRRRRRRGGGGGGGGGOOOOOOOOOBBBBBBBBBWWWWWWWWW':
+        with open("cubesolved.txt", "w") as text_file:
+            text_file.write('True')
+
     
     return path
 
